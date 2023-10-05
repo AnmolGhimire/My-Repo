@@ -1,0 +1,13 @@
+dbname: devopsmysql
+dbuser: devops1
+dbpass: 12345
+
+usernames:
+- user11
+- user12
+
+
+ntp0: 0.europe.pool.ntp.org
+ntp1: 1.europe.pool.ntp.org
+ntp2: 2.europe.pool.ntp.org
+

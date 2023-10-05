@@ -1,0 +1,48 @@
+---
+- name: Provision server
+  hosts: all
+  become: yes
+  tasks:
+    - debug:
+        var: ansible_distribution
+    - name: Install chrony on ubuntu
+      apt: 
+        name: chrony
+        state: present
+      when: 
+        ansible_distribution == "Ubuntu"
+    - name: Start and enable chrony on ubuntu
+      service: 
+        name: chronyd
+        state: started
+        enabled: true
+      when:
+        ansible_distribution == "Ubuntu"
+
+
+    - debug:
+        var: ansible_distribution
+    - name: Install chrony on centOS
+      yum:
+        name: chrony
+        state: present
+      when:
+        ansible_distribution == "centOS"
+    - name: Start and enable chrony on centOS
+      service:
+        name: chronyd
+        state: started
+        enabled: true
+      when:
+        ansible_distribution == "centOS"
+
+
+
+    - name: copy apache files
+      copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+
+
+
+ 

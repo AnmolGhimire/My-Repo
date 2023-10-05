@@ -1,0 +1,14 @@
+---
+- name: Setup webserver
+  hosts: web1
+  become: yes
+  tasks: 
+    - name: Install apache2
+      apt: 
+        name: apache2
+        state: present
+    - name: Start and enable apache2
+      service: 
+        name: apache2
+        state: started
+        enabled: true

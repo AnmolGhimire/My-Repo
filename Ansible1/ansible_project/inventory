@@ -1,0 +1,10 @@
+ansible-host
+
+[ubuntu1]
+web1
+
+[ubuntu2]
+web2
+
+[centos8]
+web3

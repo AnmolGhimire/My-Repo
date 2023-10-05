@@ -1,0 +1,62 @@
+---
+- name: Setup webserver
+  hosts: webservergrp
+  become: yes
+  tasks: 
+    - name: Install apache2
+      apt: 
+        name: apache2
+        state: present
+    - name: Start and enable apache2
+      service: 
+        name: apache2
+        state: started
+        enabled: true
+    - name: copy apache files
+      copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+
+- name: setup Db server
+  hosts: dbservergrp
+  become: yes
+  vars:
+    dbname: devopsmysql
+    dbuser: devops1
+    dbpass: 12345
+  tasks:
+    - debug: 
+        var: dbname
+    - debug:
+        msg: "value of dbpassowrd is {{dbpass}}"
+    - name: install mysql
+      yum:
+        name: mariadb-server
+        state: present
+
+    - name: install pymysql
+      yum:
+        name: python3-PyMySQL
+        state: present
+
+    - name: start and enable maraidb service
+      service: 
+        name: mariadb
+        state: started
+        enabled: yes
+
+#create  new database with name devopsmysql
+    - name: Create new database
+      mysql_db:
+        login_unix_socket: /var/lib/mysql/mysql.sock
+        name: "{{dbname}}"
+        state: present
+
+#create database user with name 'devops' with all database privilleges
+    - name: create database user
+      mysql_user:
+              #login_unix_socket: /var/run/mysqld/mysqld.sock
+        name: "{{dbname}}"
+        password: "{{dbpass}}"
+        priv: '*.*:All'
+        state: present

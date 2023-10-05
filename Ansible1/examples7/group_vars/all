@@ -1,0 +1,4 @@
+dbname: devopsmysql
+dbuser: devops1
+dbpass: 12345
+
